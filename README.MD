@@ -59,6 +59,7 @@ The project is organized with a `srcs` directory containing the `docker-compose.
 ├── Makefile
 └── srcs
     ├── docker-compose.yml
+    ├── .env
     └── requirements
         ├── bonus
         │   └── adminer

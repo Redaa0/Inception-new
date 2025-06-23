@@ -33,7 +33,7 @@ Key requirements included:
 
 The infrastructure consists of three core services and one bonus service, all communicating over a private Docker network. NGINX acts as a reverse proxy, directing traffic to the appropriate service.
 
-![Inception Project Screenshot](./assets/project-screenshot.png)
+![Inception Project Screenshot](./schema.png)
 
 ```
 +-----------------------------------------------------------------+

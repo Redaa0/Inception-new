@@ -1,5 +1,7 @@
 # Inception Project
 
+[![Alt text](./inception1.mkv)]
+
 This project, part of the 42 curriculum, involves setting up a comprehensive infrastructure using Docker. The goal is to containerize several services (NGINX, WordPress, MariaDB) and orchestrate them using Docker Compose, all while adhering to strict security and system administration best practices.
 
 ## 🚀 Table of Contents

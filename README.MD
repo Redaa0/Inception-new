@@ -163,7 +163,7 @@ Follow these steps to get the project up and running in your virtual machine.
 
 1.  **Clone the repository:**
     ```sh
-    git clone [https://github.com/your-username/inception.git](https://github.com/your-username/inception.git)
+    git clone https://github.com/Redaa0/Inception-new.git
     cd inception
     ```
 

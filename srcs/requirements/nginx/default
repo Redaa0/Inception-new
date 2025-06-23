@@ -1,0 +1,43 @@
+server {
+	listen 443 ssl;
+	listen [::]:443 ssl;
+
+	server_name localhost rmoutaou.42.fr www.rmoutaou.42.fr;
+
+	ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
+	ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
+
+	ssl_protocols TLSv1.3;
+
+	index index.php;
+	root /var/www/html;
+
+	location ~ [^/]\\.php(/|$) {
+        try_files $uri =404;
+        fastcgi_pass wordpress:9000;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+}
+
+server {
+    listen 8080 ssl;
+    listen [::]:8080 ssl;
+
+    server_name localhost rmoutaou.42.fr www.rmoutaou.42.fr;
+
+    ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
+    ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
+    ssl_protocols TLSv1.3;
+
+    location /adminer.php {
+        proxy_pass http://adminer:8080/adminer.php;  # Proxy to Adminer container
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # Optional: Redirect HTTP to HTTPS for port 8080
+    error_page 497 https://$host:8080$request_uri;
+}

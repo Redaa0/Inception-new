@@ -1,0 +1,80 @@
+services:
+  mariadb:
+    healthcheck:
+      test: mysqladmin ping -h localhost -u root -proot_password
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    container_name: mariadb
+    image: mariadb42
+    build: requirements/mariadb/
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - database:/var/lib/mysql
+    networks:
+      - network
+    init: true
+  nginx:
+    container_name: nginx
+    image: nginx42
+    build: requirements/nginx/
+    ports:
+      - "443:443"
+      - "8080:8080"
+    restart: always
+    volumes:
+      - website:/var/www/html
+    networks:
+      - network
+    env_file:
+      - .env
+    depends_on:
+      - wordpress
+    init: true
+  wordpress:
+    container_name: wordpress
+    image: wordpress42
+    build: requirements/wordpress/
+    restart: always
+    volumes:
+      - website:/var/www/html
+    networks:
+      - network
+    env_file:
+      - .env
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    init: true
+  adminer:
+    container_name: adminer
+    image: adminer42
+    build: requirements/bonus/adminer/
+    restart: always
+    networks:
+      - network
+    depends_on:
+      - mariadb
+      - wordpress
+    init: true
+
+networks:
+  network:
+    name: network
+    driver: bridge
+
+volumes:
+  database:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/rmoutaou/data/database
+      o: bind
+  website:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/rmoutaou/data/website
+      o: bind
